@@ -30,7 +30,6 @@ except:
     os.remove(f".cache-{userID}")
     token = util.prompt_for_user_token(userID)
 
-
 # ===============================================================================================
 
 #   Creatng a spotifyObject and a user variable
@@ -39,16 +38,41 @@ user = spotifyObject.current_user()
 displayName = user['display_name']
 
 print("========================================")
-print("======= Spotipy Sorting Analysis =======")
+print("======= Spotify Control Platform =======")
 print("========================================")
 print()
 print(">>> Welcome, " + str(displayName) + "!")
 print()
 
-# while True:
+while True:
+    print("- - - - - - - -")
+    print()
+    print(">>> What would you like to do?")
+    print(">>> 1.")
+    print(">>> 2.")
+    print(">>> 3.")
+    print(">>> 4. Exit")
+    print()
+    userInput = input(">>> Enter a number: ")
+    print(">>> You chose: " + userInput)
+    print()
 
+    if userInput == 1:
+        print()
 
+    if userInput == 2:
+        print()
+        
+    if userInput == 3:
+        print()
 
+    if userInput == 4:
+        print("Thank you! Have a nice day! c:")
+        exit
+    
+    else:
+        print("Sorry! That input is not recognized/ Please try again.")
+        print()
 
 #   Used to print json data when needed:
 #       print(json.dumps(<insert VARABLE here>, sort_keys=True, indent=4))
