@@ -54,24 +54,22 @@ while True:
     print(">>> 4. Exit")
     print()
     userInput = input(">>> Enter a number: ")
-    print(">>> You chose: " + userInput)
-    print()
 
-    if userInput == 1:
+    if userInput == "1":
         print()
 
-    if userInput == 2:
+    elif userInput == "2":
         print()
         
-    if userInput == 3:
+    elif userInput == "3":
         print()
 
-    if userInput == 4:
+    elif userInput == "4":
         print("Thank you! Have a nice day! c:")
         exit
     
     else:
-        print("Sorry! That input is not recognized/ Please try again.")
+        print("Sorry! That input is not recognized. Please try again.")
         print()
 
 #   Used to print json data when needed:
