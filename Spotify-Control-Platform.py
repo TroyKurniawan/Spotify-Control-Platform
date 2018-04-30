@@ -3,6 +3,7 @@ import json
 import sys
 import spotipy
 import webbrowser
+import random
 import spotipy.util as util
 from json.decoder import JSONDecodeError
 
@@ -17,7 +18,7 @@ from json.decoder import JSONDecodeError
 
 #   User IDs for Spotify:
 #       Troy: 12178698036
-#       William:
+#       William: 1225039212
 #       Stephen:
 
 #   Get user's ID from the terminal
@@ -74,3 +75,27 @@ while True:
 
 #   Used to print json data when needed:
 #       print(json.dumps(<insert VARABLE here>, sort_keys=True, indent=4))
+
+def QS(array):
+    less = []
+    equal = []
+    greater = []
+    if len(array) > 1:
+        pivot = array[0]
+        for x in array:
+            if x < pivot:
+                less.append(x)
+            if x == pivot:
+                equal.append(x)
+            if x > pivot:
+                greater.append(x)
+        return QS(less) + equal + QS(greater)
+    else:
+        return array
+
+def shuffle(array):
+    n = len(array)
+    for i in range(n - 1, 0, -1):
+        j = random.randint(0, i)
+        array[i], array[j] = array[j], array[i]
+    return array
