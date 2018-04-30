@@ -41,22 +41,40 @@ print("========================================")
 print("======= Spotify Control Platform =======")
 print("========================================")
 print()
-print(">>> Welcome, " + str(displayName) + "!")
+print("Welcome, " + str(displayName) + "!")
 print()
 
 while True:
     print("- - - - - - - -")
     print()
-    print(">>> What would you like to do?")
-    print(">>> 1.")
-    print(">>> 2.")
-    print(">>> 3.")
-    print(">>> 4. Exit")
+    print("What would you like to do?")
+    print("1. Serach for an artist")
+    print("2.")
+    print("3.")
+    print("4. Exit")
     print()
     userInput = input(">>> Enter a number: ")
 
     if userInput == "1":
         print()
+        search = input(">>> Enter the artist's alias: ")
+        print()
+
+        # Grabbing artist data from index 0 (the first result)
+        result = spotifyObject.search(search,1,0,"artist")
+        artist = result['artists']['items'][0]
+        artistID = artist['id']
+        print("Now accessing: " + artist['name'])
+
+        # Opening image in browser
+        webbrowser.open(artist['images'][0]['url'])
+        print()
+
+        print("What would you like to do?")
+        print("1. List top 10 songs")
+        print()
+        userInput = input(">>> Enter a number: ")
+        
 
     elif userInput == "2":
         print()
@@ -66,7 +84,7 @@ while True:
 
     elif userInput == "4":
         print("Thank you! Have a nice day! c:")
-        exit
+        sys.exit(1)
     
     else:
         print("Sorry! That input is not recognized. Please try again.")
