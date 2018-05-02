@@ -9,6 +9,7 @@ from json.decoder import JSONDecodeError
 
 # == FUNCTIONS ================
 
+# Quicksort
 def QS(array):
     less = []
     equal = []
@@ -26,6 +27,7 @@ def QS(array):
     else:
         return array
 
+# Shuffle
 def shuffle(array):
     n = len(array)
     for i in range(n - 1, 0, -1):
@@ -48,6 +50,8 @@ def shuffle(array):
 #       Troy: 12178698036
 #       William: 1225039212
 #       Stephen:
+
+# =============================
 
 #   Get user's ID from the terminal
 userID = sys.argv[1]
@@ -149,7 +153,7 @@ while True:
             print()
             print("What would you like to do for " + search + "?")
             print("1. List all songs alphabetically")
-            print("2. List top 10 songs (by play count)")
+            print("2. Shuffle the song order")
             print("3. List all albums")
             print("4. Exit")
             print()
@@ -159,16 +163,22 @@ while True:
             # Play a song
             if userInput == "1":
                 print()
+                print("Now printing out all songs in alphabetical order:\n")
                 trackName = QS(trackName)
-                # trackName.sort()
                 for item in trackName:
                     print(str(i) + ": " + item)
                     i+=1
                 print()
 
 
-            # List top 10 songs (by play count)
+            # Shuffle the song order
             elif userInput == "2":
+                print()
+                print("Now shuffling all of " + search + "'s songs:")
+                trackName = shuffle(trackName)
+                for item in trackName:
+                    print(str(i) + ": " + item)
+                    i+=1
                 print()
 
             elif userInput == "4":
@@ -193,4 +203,3 @@ while True:
 
 #   Used to print json data when needed:
 #       print(json.dumps(<insert VARABLE here>, sort_keys=True, indent=4))
-
