@@ -7,6 +7,34 @@ import random
 import spotipy.util as util
 from json.decoder import JSONDecodeError
 
+# == FUNCTIONS ================
+
+def QS(array):
+    less = []
+    equal = []
+    greater = []
+    if len(array) > 1:
+        pivot = array[0]
+        for x in array:
+            if x < pivot:
+                less.append(x)
+            if x == pivot:
+                equal.append(x)
+            if x > pivot:
+                greater.append(x)
+        return QS(less) + equal + QS(greater)
+    else:
+        return array
+
+def shuffle(array):
+    n = len(array)
+    for i in range(n - 1, 0, -1):
+        j = random.randint(0, i)
+        array[i], array[j] = array[j], array[i]
+    return array
+
+# =============================
+
 #   Following a youtube tutorial: https://www.youtube.com/watch?v=tmt5SdvTqUI
 
 #   The following code will be used to authentication user accounts and authorize them for this code's use.
@@ -92,6 +120,7 @@ while True:
         # Album details
         trackURI = []
         trackArt = []
+        trackName = []
         i = 0
         album = spotifyObject.artist_albums(artistID)
         album = album['items']
@@ -106,8 +135,10 @@ while True:
             tracks = spotifyObject.album_tracks(albumID)
             tracks = tracks['items']
 
+
             for item in tracks:
                 print(str(i) + ": " + item['name'])
+                trackName.append(item['name'])
                 trackURI.append(item['uri'])
                 trackArt.append(albumArt)
                 i+=1
@@ -116,20 +147,28 @@ while True:
         while True:
             # Artist menu
             print()
-            print("What would you like to do for this artist?")
-            print("1. Play a song")
-            print("1. List top 10 songs (by play count)")
-            print("2. List all albums")
-            print("3. Exit")
+            print("What would you like to do for " + search + "?")
+            print("1. List all songs alphabetically")
+            print("2. List top 10 songs (by play count)")
+            print("3. List all albums")
+            print("4. Exit")
             print()
             userInput = input(">>> Enter a number: ")
+            i=0
 
             # Play a song
             if userInput == "1":
                 print()
+                trackName = QS(trackName)
+                # trackName.sort()
+                for item in trackName:
+                    print(str(i) + ": " + item)
+                    i+=1
+                print()
+
 
             # List top 10 songs (by play count)
-            if userInput == "1":
+            elif userInput == "2":
                 print()
 
             elif userInput == "4":
@@ -155,26 +194,3 @@ while True:
 #   Used to print json data when needed:
 #       print(json.dumps(<insert VARABLE here>, sort_keys=True, indent=4))
 
-def QS(array):
-    less = []
-    equal = []
-    greater = []
-    if len(array) > 1:
-        pivot = array[0]
-        for x in array:
-            if x < pivot:
-                less.append(x)
-            if x == pivot:
-                equal.append(x)
-            if x > pivot:
-                greater.append(x)
-        return QS(less) + equal + QS(greater)
-    else:
-        return array
-
-def shuffle(array):
-    n = len(array)
-    for i in range(n - 1, 0, -1):
-        j = random.randint(0, i)
-        array[i], array[j] = array[j], array[i]
-    return array
