@@ -5,6 +5,7 @@ import spotipy
 import webbrowser
 import random
 import spotipy.util as util
+import pprint
 from json.decoder import JSONDecodeError
 
 # == FUNCTIONS ================
@@ -34,6 +35,12 @@ def shuffle(array):
         j = random.randint(0, i)
         array[i], array[j] = array[j], array[i]
     return array
+
+# Show tracks from the user
+def show_tracks(tracks):
+    for i, item in enumerate(tracks['items']):
+        track = item['track']
+        print("%d. %s - %s" % (i, track['artists'][0]['name'], track['name']))
 
 # =============================
 
@@ -100,7 +107,7 @@ while True:
     print("What would you like to do?")
     print("1. Serach for an artist")
     print("2. Search for a song")
-    print("3. ")
+    print("3. Show all of your playlists")
     print("4. Exit")
     print()
     userInput = input(">>> Enter a number: ")
@@ -191,6 +198,39 @@ while True:
         print()
         
     elif userInput == "3":
+        print()
+
+        # Obtain user's username
+        if len(sys.argv) > 1:
+            username = sys.argv[1]
+        else:
+            print("Error! Username not found!")
+            continue
+
+        # Receive the user's token
+        token = util.prompt_for_user_token(username)
+
+        # If the token is found
+        if token:
+            sp = spotipy.Spotify(auth=token)
+            playlists = sp.user_playlists(username)
+            for playlist in playlists['items']:
+                if playlist['owner']['id'] == username:
+                    print()
+                    print(playlist['name'])
+                    print('  total tracks', playlist['tracks']['total'])
+                    results = sp.user_playlist(username, playlist['id'],
+                        fields="tracks,next")
+                    tracks = results['tracks']
+                    show_tracks(tracks)
+                    while tracks['next']:
+                        tracks = sp.next(tracks)
+                        show_tracks(tracks)
+        
+        # If the token cannot be found
+        else:
+            print("Error! Token not found!")
+        
         print()
 
     elif userInput == "4":
