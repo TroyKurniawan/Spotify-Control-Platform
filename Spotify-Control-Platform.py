@@ -6,6 +6,7 @@ import webbrowser
 import random
 import spotipy.util as util
 import pprint
+import subprocess
 from json.decoder import JSONDecodeError
 
 # == FUNCTIONS ================
@@ -143,7 +144,7 @@ def show_tracks(tracks):
 
 #   Get user's ID from the terminal
 userID = sys.argv[1]
-scope = 'user-read-private user-read-playback-state user-modify-playback-state'
+scope = 'user-read-private user-read-playback-state user-modify-playback-state playlist-modify-public'
 
 #   Erase cache and prompt for user permission:
 # try:
@@ -192,7 +193,7 @@ while True:
     print("1. Serach for an artist")
     print("2. Search for a song")
     print("3. Show all of your playlists")
-    printf("4. Create a playlist")
+    print("4. Create a playlist")
     print("5. Exit")
     print()
     userInput = input(">>> Enter a number: ")
@@ -280,27 +281,34 @@ while True:
                 trackNumber = input(">>> Which song would you like to inspect? Select a song by number: ")
                 inspect = spotifyObject.track(trackURI[int(trackNumber)])
                 
-                # Artist menu
-                print()
-                print("What would you like to do with " + inspect['album']['name'] + "?")
-                print("1. Preview song")
-                print("2. Add song to playlist")
-                print("3. ")
-                print("4. Exit")
-                print()
-                userInput = input(">>> Enter a number: ")
-
-                if userInput == '1':
+                while True:
+                    # Artist menu
                     print()
-                    print("Now Previewing: " + inspect['album']['name'])
-                    webbrowser.open(inspect['preview_url'])
+                    print("What would you like to do with " + inspect['album']['name'] + "?")
+                    print("1. Preview song")
+                    print("2. Add song to playlist")
+                    print("3. Exit")
+                    print()
+                    userInput = input(">>> Enter a number: ")
+
+                    if userInput == '1':
+                        print()
+                        print("Now Previewing: " + inspect['album']['name'])
+                        webbrowser.open(inspect['preview_url'])
+
+                    elif userInput == "2":
+                        print()
+                        print("Adding song to the buffer playlist...")
+                        masterPlaylist.append(inspect['id'])
+
+                    elif userInput == "3":
+                        print()
+                        break
 
             elif userInput == "4":
                 print()
                 break
         
-        
-
     elif userInput == "2":
         print()
         
@@ -311,7 +319,6 @@ while True:
         # If the token is found
         if token:
             playlists = spotifyObject.user_playlists(userID)
-            print(json.dumps(playlists, sort_keys=True, indent=4))
             for playlist in playlists['items']:
 
                 if playlist['owner']['id'] == userID:
@@ -334,9 +341,12 @@ while True:
 
     elif userInput == "4":
         print("Creating playlist!\n")
-        playListName = input("What do you want to name the playlist?\n")
-        playList = user_playlist_create(userID, playListName, public=True, "This was using Spotipy\n")
-        user_playlist_add_tracks(userID, playLists['name'][0]['uri'], position=None)
+        playlistName = input("What do you want to name the playlist?\n")
+        spotifyObject.trace = False
+        playlists = spotifyObject.user_playlist_create(userID, playlistName, description="This was using Spotipy\n")
+        playlistURI = playlists['uri']
+        results = spotifyObject.user_playlist_add_tracks(userID, playlistURI, masterPlaylist)
+        print()
 
     elif userInput == "5":
         print("Thank you! Have a nice day! c:")
@@ -347,6 +357,10 @@ while True:
         print()
 
 #   Used to print json data when needed:
+<<<<<<< HEAD
 #       print(json.dumps(<insert VARABLE here>, sort_keys=True, indent=4))
 <<<<<<< HEAD
 
+=======
+#       print(json.dumps(<insert VARABLE here>, sort_keys=True, indent=4))
+>>>>>>> 639297e9a409d4ca8fb51a196927f7b2d1505cd7
