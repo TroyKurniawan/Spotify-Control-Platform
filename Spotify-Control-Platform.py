@@ -94,6 +94,7 @@ displayName = user['display_name']
 # if artist != "":
 #     print("Now Playing: " + artist + " - " + currentPlaying)
 
+print()
 print("========================================")
 print("======= Spotify Control Platform =======")
 print("========================================")
@@ -124,6 +125,7 @@ while True:
         artistID = artist['id']
         album = spotifyObject.artist_albums(artistID)
         album = artist['id']
+        
 
         # Opening image in browser if it exists
         if artist['images']:
@@ -158,16 +160,16 @@ while True:
         while True:
             # Artist menu
             print()
-            print("What would you like to do for " + search + "?")
+            print("What would you like to do with " + search + "?")
             print("1. List all songs alphabetically")
             print("2. Shuffle the song order")
-            print("3. List all albums")
+            print("3. Inspect a song")
             print("4. Exit")
             print()
             userInput = input(">>> Enter a number: ")
             i=0
 
-            # Play a song
+            # List all songs alphabetically
             if userInput == "1":
                 print()
                 print("Now printing out all songs in alphabetical order:\n")
@@ -187,6 +189,27 @@ while True:
                     print(str(i) + ": " + item)
                     i+=1
                 print()
+
+            # Inspect a song
+            elif userInput == "3":
+                print()
+                trackNumber = input(">>> Which song would you like to inspect? Select a song by number: ")
+                inspect = spotifyObject.track(trackURI[int(trackNumber)])
+                
+                # Artist menu
+                print()
+                print("What would you like to do with " + inspect['album']['name'] + "?")
+                print("1. Preview song")
+                print("2. Add song to playlist")
+                print("3. ")
+                print("4. Exit")
+                print()
+                userInput = input(">>> Enter a number: ")
+
+                if userInput == '1':
+                    print()
+                    print("Now Previewing: " + inspect['album']['name'])
+                    webbrowser.open(inspect['preview_url'])
 
             elif userInput == "4":
                 print()
