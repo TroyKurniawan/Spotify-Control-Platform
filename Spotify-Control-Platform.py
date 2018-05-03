@@ -122,7 +122,7 @@ def shuffle(array):
 def show_tracks(tracks):
     for i, item in enumerate(tracks['items']):
         track = item['track']
-        print("%d. %s - %s" % (i, track['artists'][0]['name'], track['name']))
+        print("    %s - %s" % (track['artists'][0]['name'], track['name']))
 
 # =============================
 
@@ -299,10 +299,11 @@ while True:
                     print()
                     print("    [PLAYLIST] " + playlist['name'] + "\n    ----------------------------------")
                     print('    Number of tracks in playlist: ', playlist['tracks']['total'])
-                    results = spotifyObject.user_playlist(userID, playlist['id'],
-                        fields="tracks,next")
+                    print("    ----------------------------------")
+                    results = spotifyObject.user_playlist(userID, playlist['id'], fields="tracks,next")
                     tracks = results['tracks']
                     show_tracks(tracks)
+
                     while tracks['next']:
                         tracks = spotifyObject.next(tracks)
                         show_tracks(tracks)
