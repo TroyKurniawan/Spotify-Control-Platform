@@ -190,15 +190,15 @@ while True:
     print("- - - - - - - -")
     print()
     print("What would you like to do?")
-    print("1. Serach for an artist")
-    print("2. Search for a song")
-    print("3. Show all of your playlists")
-    print("4. Create a playlist")
+    print("1. Serach for an artist and song to store in a playlist")
+    print("2. Show all of your public playlists")
+    print("3. Sort/Shuffle your buffer playlist")
+    print("4. Create a playlist with the selected songs")
     print("5. Exit")
     print()
     userInput = input(">>> Enter a number: ")
 
-    # Serach for an artist
+    # Serach for an artist and song
     if userInput == "1":
         print()
         search = input(">>> Enter the artist's alias: ")
@@ -247,9 +247,8 @@ while True:
             print()
             print("What would you like to do with " + search + "?")
             print("1. List all songs alphabetically")
-            print("2. Shuffle the song order")
-            print("3. Inspect a song")
-            print("4. Exit")
+            print("2. Select a song")
+            print("3. Exit")
             print()
             userInput = input(">>> Enter a number: ")
             i=0
@@ -264,27 +263,16 @@ while True:
                     i+=1
                 print()
 
-
-            # Shuffle the song order
+            # Select a song
             elif userInput == "2":
                 print()
-                print("Now shuffling all of " + search + "'s songs:")
-                trackName = shuffle(trackName)
-                for item in trackName:
-                    print(str(i) + ": " + item)
-                    i+=1
-                print()
-
-            # Inspect a song
-            elif userInput == "3":
-                print()
-                trackNumber = input(">>> Which song would you like to inspect? Select a song by number: ")
+                trackNumber = input(">>> Which song would you like to select? Choose a song by number: ")
                 inspect = spotifyObject.track(trackURI[int(trackNumber)])
                 
                 while True:
                     # Artist menu
                     print()
-                    print("What would you like to do with " + inspect['album']['name'] + "?")
+                    print("What would you like to do with " + inspect['name'] + "?")
                     print("1. Preview song")
                     print("2. Add song to playlist")
                     print("3. Exit")
@@ -305,14 +293,12 @@ while True:
                         print()
                         break
 
-            elif userInput == "4":
+            elif userInput == "3":
                 print()
                 break
         
+    # Show all of your public playlists        
     elif userInput == "2":
-        print()
-        
-    elif userInput == "3":
         print()
         print("Now printing out all of " + str(displayName) + "'s playlists")
 
@@ -339,17 +325,86 @@ while True:
         
         print()
 
+    # Sort your buffer playlist
+    elif userInput == "3":
+        print()
+        print("What would you like to do with your buffer playlist?")
+        print("1. Sort alphabetically through Quicksort")
+        print("2. Sort alphabetically through Selection Sort")
+        print("3. Sort alphabetically through Heap Sort")
+        print("4. Sort alphabetically through Merge Sort")
+        print("5. Shuffle the song order")
+        print("6. Exit")
+        print()
+        userInput = input(">>> Enter a number: ")
+        i=0
+
+        # Quicksort
+        if userInput == "1":
+            print()
+            print("Sorting using Quicksort...")
+            masterPlaylist = QS(masterPlaylist)
+            print("Sorted!")
+
+        # Selection Sort
+        elif userInput == "2":
+            print()
+            print("Sorting using Selection Sort...")
+            masterPlaylist = SelSort(masterPlaylist)
+            print("Sorted!")
+
+        # Heap Sort
+        elif userInput == "3":
+            print()
+            print("Sorting using Quicksort...")
+            # masterPlaylist = heapSort(masterPlaylist)
+            print("Sorted!")
+            
+        # Merge Sort
+        elif userInput == "4":
+            print()
+            print("Sorting using Merge Sort...")
+            # masterPlaylist = mergeSort(masterPlaylist, 0, len(masterPlaylist))
+            print("Sorted!")
+
+        # Shuffle
+        elif userInput == "5":
+            print()
+            print("Shuffling buffer playlist...")
+            masterPlaylist = shuffle(masterPlaylist)
+            print("Shuffled!")
+
+        # Exit
+        elif userInput == "6":
+            print()
+
+    # Create a playlist
     elif userInput == "4":
-        print("Creating playlist!\n")
-        playlistName = input("What do you want to name the playlist?\n")
+        print()
+        print("Creating playlist...")
+
+        # Ask for user input for playlist name and description
+        playlistName = input(">>> What do you want to name the playlist? ")
+        playlistDescription = input(">>> Write a description for the playlist: ")
+
+        # Create playlist and enter the songs
         spotifyObject.trace = False
-        playlists = spotifyObject.user_playlist_create(userID, playlistName, description="This was using Spotipy\n")
+        playlists = spotifyObject.user_playlist_create(userID, playlistName, description=playlistDescription)
+
+        # Fill playlist with the songs chosen
         playlistURI = playlists['uri']
-        results = spotifyObject.user_playlist_add_tracks(userID, playlistURI, masterPlaylist)
+        if masterPlaylist:
+            results = spotifyObject.user_playlist_add_tracks(userID, playlistURI, masterPlaylist)
+
+        print()
+        print("=== PLAYLIST [" + playlistName + "] CREATED ===")
         print()
 
+    # Exit
     elif userInput == "5":
+        print()
         print("Thank you! Have a nice day! c:")
+        print()
         sys.exit(1)
     
     else:
