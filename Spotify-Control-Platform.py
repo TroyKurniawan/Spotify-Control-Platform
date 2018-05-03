@@ -56,23 +56,23 @@ def merge(arr, l, m, r):
     k = l
 
     while i < n1 and j < n2:
-        if L[i] <= R[j]
+        if L[i] <= R[j]:
             arr[k] = L[i]
             i += 1
-        else
+        else:
             arr[k] = R[j]
             j += 1
         k += 1
 
-    while i < n1
+    while i < n1:
         arr[k] = L[i]
-            i += 1
-            k += 1
+        i += 1
+        k += 1
 
-    while j < n2
+    while j < n2:
         arr[k] = R[j]
-            j += 1
-            k += 1
+        j += 1
+        k += 1
 
 def mergeSort(arr, l, r):
     if l < r:
@@ -83,20 +83,19 @@ def mergeSort(arr, l, r):
         merge(arr, l, m, r)
 
 # Heapify
-def heapify(arr, n, i):
+def heapify(arr, n, root):
     largest = root
-    l = 2 * i + 1
-    r = 2 * i + 2
+    l = 2 * root + 1
+    r = 2 * root + 2
 
-    if l < n and arr[root] < arr[]
+    if l < n and arr[root] < arr[l]:
         largest = l
 
-    if r < n and arr[root] < arr[j]
+    if r < n and arr[root] < arr[r]:
         largest = r
 
-    if largest != root
+    if largest != root:
         arr[root], arr[largest] = arr[largest], arr[root]
-
         heapify(arr, n, largest)
 
 # Heapsort
@@ -309,6 +308,7 @@ while True:
         # If the token is found
         if token:
             playlists = spotifyObject.user_playlists(userID)
+            print(json.dumps(playlists, sort_keys=True, indent=4))
             for playlist in playlists['items']:
 
                 if playlist['owner']['id'] == userID:
