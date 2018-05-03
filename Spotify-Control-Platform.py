@@ -65,11 +65,11 @@ userID = sys.argv[1]
 scope = 'user-read-private user-read-playback-state user-modify-playback-state'
 
 #   Erase cache and prompt for user permission:
-try:
-    token = util.prompt_for_user_token(userID, scope)
-except:
-    os.remove(f".cache-{userID}")
-    token = util.prompt_for_user_token(userID, scope)
+# try:
+token = util.prompt_for_user_token(userID, scope)
+# except:
+    # os.remove(f".cache-{userID}")
+    # token = util.prompt_for_user_token(userID, scope)
 
 # ===============================================================================================
 
