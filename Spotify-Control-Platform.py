@@ -6,6 +6,7 @@ import webbrowser
 import random
 import spotipy.util as util
 import pprint
+import subprocess
 from json.decoder import JSONDecodeError
 
 # == FUNCTIONS ================
@@ -143,7 +144,7 @@ def show_tracks(tracks):
 
 #   Get user's ID from the terminal
 userID = sys.argv[1]
-scope = 'user-read-private user-read-playback-state user-modify-playback-state'
+scope = 'user-read-private user-read-playback-state user-modify-playback-state playlist-modify-public'
 
 #   Erase cache and prompt for user permission:
 # try:
@@ -192,7 +193,7 @@ while True:
     print("1. Serach for an artist")
     print("2. Search for a song")
     print("3. Show all of your playlists")
-    printf("4. Create a playlist")
+    print("4. Create a playlist")
     print("5. Exit")
     print()
     userInput = input(">>> Enter a number: ")
@@ -280,27 +281,34 @@ while True:
                 trackNumber = input(">>> Which song would you like to inspect? Select a song by number: ")
                 inspect = spotifyObject.track(trackURI[int(trackNumber)])
                 
-                # Artist menu
-                print()
-                print("What would you like to do with " + inspect['album']['name'] + "?")
-                print("1. Preview song")
-                print("2. Add song to playlist")
-                print("3. ")
-                print("4. Exit")
-                print()
-                userInput = input(">>> Enter a number: ")
-
-                if userInput == '1':
+                while True:
+                    # Artist menu
                     print()
-                    print("Now Previewing: " + inspect['album']['name'])
-                    webbrowser.open(inspect['preview_url'])
+                    print("What would you like to do with " + inspect['album']['name'] + "?")
+                    print("1. Preview song")
+                    print("2. Add song to playlist")
+                    print("3. Exit")
+                    print()
+                    userInput = input(">>> Enter a number: ")
+
+                    if userInput == '1':
+                        print()
+                        print("Now Previewing: " + inspect['album']['name'])
+                        webbrowser.open(inspect['preview_url'])
+
+                    elif userInput == "2":
+                        print()
+                        print("Adding song to the buffer playlist...")
+                        masterPlaylist.append(inspect)
+
+                    elif userInput == "3":
+                        print()
+                        break
 
             elif userInput == "4":
                 print()
                 break
         
-        
-
     elif userInput == "2":
         print()
         
@@ -311,7 +319,6 @@ while True:
         # If the token is found
         if token:
             playlists = spotifyObject.user_playlists(userID)
-            print(json.dumps(playlists, sort_keys=True, indent=4))
             for playlist in playlists['items']:
 
                 if playlist['owner']['id'] == userID:
@@ -334,9 +341,10 @@ while True:
 
     elif userInput == "4":
         print("Creating playlist!\n")
-        playListName = input("What do you want to name the playlist?\n")
-        playList = user_playlist_create(userID, playListName, public=True, "This was using Spotipy\n")
-        user_playlist_add_tracks(userID, playLists['name'][0]['uri'], position=None)
+        playlistName = input("What do you want to name the playlist?\n")
+        spotifyObject.trace = False
+        playlists = spotifyObject.user_playlist_create(userID, playlistName, description="This was using Spotipy\n")
+        results = spotifyObject.user_playlist_add_tracks(userID, playlists['name'][0]['uri'], masterPlaylist)
 
     elif userInput == "5":
         print("Thank you! Have a nice day! c:")
@@ -348,89 +356,3 @@ while True:
 
 #   Used to print json data when needed:
 #       print(json.dumps(<insert VARABLE here>, sort_keys=True, indent=4))
-<<<<<<< HEAD
-
-#SelectionSort
-def SelSort:
-A = []
-
-for i in range(len(A)):
-    min_index = i
-    for j in range(i + 1, len(A)):
-        if A[min_index] > A[j]:
-            min_index = j
-    A[i], A[min_index] = A[min_index], A[i]
-
-#MergeSort
-def merge(arr, l, m, r):
-    n1 = m - l + 1
-    n2 = r - m
-    L = [0] * (n1)
-    R = [0] * (n2)
-
-    for i in range(0 , n1):
-        L[i] = arr[l + i]
-
-    for j in range (0, n2):
-        R[i] = arr[m + 1 + j]
-
-    i = 0
-    j = 0
-    k = l
-
-    while i < n1 and j < n2:
-        if L[i] <= R[j]
-            arr[k] = L[i]
-            i += 1
-        else
-            arr[k] = R[j]
-            j += 1
-        k += 1
-
-    while i < n1
-        arr[k] = L[i]
-            i += 1
-            k += 1
-
-    while j < n2
-        arr[k] = R[j]
-            j += 1
-            k += 1
-
-def mergeSort(arr, l, r):
-    if l < r:
-        m = (l + (r - 1)) / 2
-
-        mergeSort(arr, l, m)
-        mergeSort(arr, m + 1, r)
-        merge(arr, l, m, r)
-
-# heapify
-def heapify(arr, n, root):
-    largest = root
-    l = 2 * root + 1
-    r = 2 * root + 2
-
-    if l < n and arr[root] < arr[l]
-        largest = l
-
-    if r < n and arr[root] < arr[r]
-        largest = r
-
-    if largest != root
-        arr[root], arr[largest] = arr[largest], arr[root]
-
-        heapify(arr, n, largest)
-
-#heapsort
-def heapSort(arr):
-    n = len(arr)
-
-    for i in range(n, -1, -1):
-        heapify(arr, n, i)
-
-    for i in range(n - 1, 0, -1):
-        arr[i], arr[0] = arr[0], arr[i]
-        heapify(arr, i, 0)
-=======
->>>>>>> 42a2e9e5b60ac0fe24c134145add8d90aea414a8
