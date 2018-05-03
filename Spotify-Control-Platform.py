@@ -5,7 +5,44 @@ import spotipy
 import webbrowser
 import random
 import spotipy.util as util
+import pprint
 from json.decoder import JSONDecodeError
+
+# == FUNCTIONS ================
+
+# Quicksort
+def QS(array):
+    less = []
+    equal = []
+    greater = []
+    if len(array) > 1:
+        pivot = array[0]
+        for x in array:
+            if x < pivot:
+                less.append(x)
+            if x == pivot:
+                equal.append(x)
+            if x > pivot:
+                greater.append(x)
+        return QS(less) + equal + QS(greater)
+    else:
+        return array
+
+# Shuffle
+def shuffle(array):
+    n = len(array)
+    for i in range(n - 1, 0, -1):
+        j = random.randint(0, i)
+        array[i], array[j] = array[j], array[i]
+    return array
+
+# Show tracks from the user
+def show_tracks(tracks):
+    for i, item in enumerate(tracks['items']):
+        track = item['track']
+        print("%d. %s - %s" % (i, track['artists'][0]['name'], track['name']))
+
+# =============================
 
 #   Following a youtube tutorial: https://www.youtube.com/watch?v=tmt5SdvTqUI
 
@@ -20,6 +57,8 @@ from json.decoder import JSONDecodeError
 #       Troy: 12178698036
 #       William: 1225039212
 #       Stephen:
+
+# =============================
 
 #   Get user's ID from the terminal
 userID = sys.argv[1]
@@ -68,7 +107,7 @@ while True:
     print("What would you like to do?")
     print("1. Serach for an artist")
     print("2. Search for a song")
-    print("3. ")
+    print("3. Show all of your playlists")
     print("4. Exit")
     print()
     userInput = input(">>> Enter a number: ")
@@ -86,12 +125,14 @@ while True:
         album = spotifyObject.artist_albums(artistID)
         album = artist['id']
 
-        # Opening image in browser
-        webbrowser.open(artist['images'][0]['url'])
+        # Opening image in browser if it exists
+        if artist['images']:
+            webbrowser.open(artist['images'][0]['url'])
 
         # Album details
         trackURI = []
         trackArt = []
+        trackName = []
         i = 0
         album = spotifyObject.artist_albums(artistID)
         album = album['items']
@@ -108,6 +149,7 @@ while True:
 
             for item in tracks:
                 print(str(i) + ": " + item['name'])
+                trackName.append(item['name'])
                 trackURI.append(item['uri'])
                 trackArt.append(albumArt)
                 i+=1
@@ -116,20 +158,34 @@ while True:
         while True:
             # Artist menu
             print()
-            print("What would you like to do for this artist?")
-            print("1. Play a song")
-            print("1. List top 10 songs (by play count)")
-            print("2. List all albums")
-            print("3. Exit")
+            print("What would you like to do for " + search + "?")
+            print("1. List all songs alphabetically")
+            print("2. Shuffle the song order")
+            print("3. List all albums")
+            print("4. Exit")
             print()
             userInput = input(">>> Enter a number: ")
+            i=0
 
             # Play a song
             if userInput == "1":
                 print()
+                print("Now printing out all songs in alphabetical order:\n")
+                trackName = QS(trackName)
+                for item in trackName:
+                    print(str(i) + ": " + item)
+                    i+=1
+                print()
 
-            # List top 10 songs (by play count)
-            if userInput == "1":
+
+            # Shuffle the song order
+            elif userInput == "2":
+                print()
+                print("Now shuffling all of " + search + "'s songs:")
+                trackName = shuffle(trackName)
+                for item in trackName:
+                    print(str(i) + ": " + item)
+                    i+=1
                 print()
 
             elif userInput == "4":
@@ -143,6 +199,30 @@ while True:
         
     elif userInput == "3":
         print()
+        print("Now printing out all of " + str(displayName) + "'s playlists")
+
+        # If the token is found
+        if token:
+            playlists = spotifyObject.user_playlists(userID)
+            for playlist in playlists['items']:
+
+                if playlist['owner']['id'] == userID:
+                    print()
+                    print("[PLAYLIST] " + playlist['name'] + "\n----------------------------------")
+                    print('Number of tracks in playlist: ', playlist['tracks']['total'])
+                    results = spotifyObject.user_playlist(userID, playlist['id'],
+                        fields="tracks,next")
+                    tracks = results['tracks']
+                    show_tracks(tracks)
+                    while tracks['next']:
+                        tracks = spotifyObject.next(tracks)
+                        show_tracks(tracks)
+        
+        # If the token cannot be found
+        else:
+            print("Error! Token not found!")
+        
+        print()
 
     elif userInput == "4":
         print("Thank you! Have a nice day! c:")
@@ -154,27 +234,3 @@ while True:
 
 #   Used to print json data when needed:
 #       print(json.dumps(<insert VARABLE here>, sort_keys=True, indent=4))
-
-def QS(array):
-    less = []
-    equal = []
-    greater = []
-    if len(array) > 1:
-        pivot = array[0]
-        for x in array:
-            if x < pivot:
-                less.append(x)
-            if x == pivot:
-                equal.append(x)
-            if x > pivot:
-                greater.append(x)
-        return QS(less) + equal + QS(greater)
-    else:
-        return array
-
-def shuffle(array):
-    n = len(array)
-    for i in range(n - 1, 0, -1):
-        j = random.randint(0, i)
-        array[i], array[j] = array[j], array[i]
-    return array
