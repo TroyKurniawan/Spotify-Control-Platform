@@ -299,7 +299,7 @@ while True:
                     elif userInput == "2":
                         print()
                         print("Adding song to the buffer playlist...")
-                        masterPlaylist.append(inspect)
+                        masterPlaylist.append(inspect['id'])
 
                     elif userInput == "3":
                         print()
@@ -344,7 +344,9 @@ while True:
         playlistName = input("What do you want to name the playlist?\n")
         spotifyObject.trace = False
         playlists = spotifyObject.user_playlist_create(userID, playlistName, description="This was using Spotipy\n")
-        results = spotifyObject.user_playlist_add_tracks(userID, playlists['name'][0]['uri'], masterPlaylist)
+        playlistURI = playlists['uri']
+        results = spotifyObject.user_playlist_add_tracks(userID, playlistURI, masterPlaylist)
+        print()
 
     elif userInput == "5":
         print("Thank you! Have a nice day! c:")
