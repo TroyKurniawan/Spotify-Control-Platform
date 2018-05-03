@@ -125,8 +125,9 @@ while True:
         album = spotifyObject.artist_albums(artistID)
         album = artist['id']
 
-        # Opening image in browser
-        webbrowser.open(artist['images'][0]['url'])
+        # Opening image in browser if it exists
+        if artist['images']:
+            webbrowser.open(artist['images'][0]['url'])
 
         # Album details
         trackURI = []
@@ -145,7 +146,6 @@ while True:
             albumArt = item['images'][0]['url']
             tracks = spotifyObject.album_tracks(albumID)
             tracks = tracks['items']
-
 
             for item in tracks:
                 print(str(i) + ": " + item['name'])
@@ -199,32 +199,23 @@ while True:
         
     elif userInput == "3":
         print()
-
-        # Obtain user's username
-        if len(sys.argv) > 1:
-            username = sys.argv[1]
-        else:
-            print("Error! Username not found!")
-            continue
-
-        # Receive the user's token
-        token = util.prompt_for_user_token(username)
+        print("Now printing out all of " + str(displayName) + "'s playlists")
 
         # If the token is found
         if token:
-            sp = spotipy.Spotify(auth=token)
-            playlists = sp.user_playlists(username)
+            playlists = spotifyObject.user_playlists(userID)
             for playlist in playlists['items']:
-                if playlist['owner']['id'] == username:
+
+                if playlist['owner']['id'] == userID:
                     print()
-                    print(playlist['name'])
-                    print('  total tracks', playlist['tracks']['total'])
-                    results = sp.user_playlist(username, playlist['id'],
+                    print("[PLAYLIST] " + playlist['name'] + "\n----------------------------------")
+                    print('Number of tracks in playlist: ', playlist['tracks']['total'])
+                    results = spotifyObject.user_playlist(userID, playlist['id'],
                         fields="tracks,next")
                     tracks = results['tracks']
                     show_tracks(tracks)
                     while tracks['next']:
-                        tracks = sp.next(tracks)
+                        tracks = spotifyObject.next(tracks)
                         show_tracks(tracks)
         
         # If the token cannot be found
