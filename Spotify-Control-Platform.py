@@ -336,7 +336,7 @@ while True:
         print("Creating playlist!\n")
         playListName = input("What do you want to name the playlist?\n")
         playList = user_playlist_create(userID, playListName, public=True, "This was using Spotipy\n")
-        user_playlist_add_tracks(userID, playList['id'], position=None)
+        user_playlist_add_tracks(userID, playLists['name'][0]['uri'], position=None)
 
     elif userInput == "5":
         print("Thank you! Have a nice day! c:")
