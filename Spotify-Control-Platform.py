@@ -234,3 +234,86 @@ while True:
 
 #   Used to print json data when needed:
 #       print(json.dumps(<insert VARABLE here>, sort_keys=True, indent=4))
+
+#SelectionSort
+def SelSort:
+A = []
+
+for i in range(len(A)):
+    min_index = i
+    for j in range(i + 1, len(A)):
+        if A[min_index] > A[j]:
+            min_index = j
+    A[i], A[min_index] = A[min_index], A[i]
+
+#MergeSort
+def merge(arr, l, m, r):
+    n1 = m - l + 1
+    n2 = r - m
+    L = [0] * (n1)
+    R = [0] * (n2)
+
+    for i in range(0 , n1):
+        L[i] = arr[l + i]
+
+    for j in range (0, n2):
+        R[i] = arr[m + 1 + j]
+
+    i = 0
+    j = 0
+    k = l
+
+    while i < n1 and j < n2:
+        if L[i] <= R[j]
+            arr[k] = L[i]
+            i += 1
+        else
+            arr[k] = R[j]
+            j += 1
+        k += 1
+
+    while i < n1
+        arr[k] = L[i]
+            i += 1
+            k += 1
+
+    while j < n2
+        arr[k] = R[j]
+            j += 1
+            k += 1
+
+def mergeSort(arr, l, r):
+    if l < r:
+        m = (l + (r - 1)) / 2
+
+        mergeSort(arr, l, m)
+        mergeSort(arr, m + 1, r)
+        merge(arr, l, m, r)
+
+# heapify
+def heapify(arr, n, i):
+    largest = root
+    l = 2 * i + 1
+    r = 2 * i + 2
+
+    if l < n and arr[root] < arr[]
+        largest = l
+
+    if r < n and arr[root] < arr[j]
+        largest = r
+
+    if largest != root
+        arr[root], arr[largest] = arr[largest], arr[root]
+
+        heapify(arr, n, largest)
+
+#heapsort
+def heapSort(arr):
+    n = len(arr)
+
+    for i in range(n, -1, -1):
+        heapify(arr, n, i)
+
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]
+        heapify(arr, i, 0)
