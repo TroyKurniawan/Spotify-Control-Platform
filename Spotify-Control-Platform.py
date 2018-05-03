@@ -102,6 +102,8 @@ print()
 print("Welcome, " + str(displayName) + "!")
 print()
 
+masterPlaylist = []
+
 while True:
     print("- - - - - - - -")
     print()
@@ -109,7 +111,8 @@ while True:
     print("1. Serach for an artist")
     print("2. Search for a song")
     print("3. Show all of your playlists")
-    print("4. Exit")
+    printf("4. Create a playlist")
+    print("5. Exit")
     print()
     userInput = input(">>> Enter a number: ")
 
@@ -248,6 +251,12 @@ while True:
         print()
 
     elif userInput == "4":
+        print("Creating playlist!\n")
+        playListName = input("What do you want to name the playlist?\n")
+        playList = user_playlist_create(userID, playListName, public=True, "This was using Spotipy\n")
+        user_playlist_add_tracks(userID, playList['id'], position=None)
+
+    elif userInput == "5":
         print("Thank you! Have a nice day! c:")
         sys.exit(1)
     
@@ -314,15 +323,15 @@ def mergeSort(arr, l, r):
         merge(arr, l, m, r)
 
 # heapify
-def heapify(arr, n, i):
+def heapify(arr, n, root):
     largest = root
-    l = 2 * i + 1
-    r = 2 * i + 2
+    l = 2 * root + 1
+    r = 2 * root + 2
 
-    if l < n and arr[root] < arr[]
+    if l < n and arr[root] < arr[l]
         largest = l
 
-    if r < n and arr[root] < arr[j]
+    if r < n and arr[root] < arr[r]
         largest = r
 
     if largest != root
