@@ -194,6 +194,7 @@ print()
 print("Welcome, " + str(displayName) + "!")
 print()
 
+isSorted = False
 masterPlaylist = []
 masterPlaylistName = []
 
@@ -336,60 +337,68 @@ while True:
 
     # Sort your buffer playlist
     elif userInput == "3":
-        print()
-        print("    What would you like to do with your buffer playlist?")
-        print("    1. Sort alphabetically through Quicksort")
-        print("    2. Sort alphabetically through Selection Sort")
-        print("    3. Sort alphabetically through Heap Sort")
-        print("    4. Sort alphabetically through Merge Sort")
-        print("    5. Shuffle the song order")
-        print("    0. Exit")
-        print()
-        userInput = input("    >>> Enter a number: ")
-        i=0
 
-        # Quicksort
-        if userInput == "1":
+        if isSorted:
             print()
-            print("        Sorting using Quicksort...")
-            masterPlaylist = QS(masterPlaylist, masterPlaylistName)
-            print("        Sorted!\n")
+            print("    Note: You have already sorted the buffer playlist. You may not sort it again until you've cleared the buffer playlist.")
+            continue
 
-        # Selection Sort
-        elif userInput == "2":
+        while True:
             print()
-            print("        Sorting using Selection Sort...")
-            masterPlaylist = SelSort(masterPlaylist)
-            print("        Sorted!\n")
+            print("    What would you like to do with your buffer playlist?")
+            print("    1. Sort alphabetically through Quicksort")
+            print("    *2. Sort alphabetically through Selection Sort")
+            print("    *3. Sort alphabetically through Heap Sort")
+            print("    *4. Sort alphabetically through Merge Sort")
+            print("    5. Shuffle the song order")
+            print("    0. Exit")
+            print()
+            userInput = input("    >>> Enter a number: ")
+            i=0
 
-        # Heap Sort
-        elif userInput == "3":
-            print()
-            print("        Sorting using Quicksort...")
-            # masterPlaylist = heapSort(masterPlaylist)
-            print("        Sorted!\n")
-            
-        # Merge Sort
-        elif userInput == "4":
-            print()
-            print("        Sorting using Merge Sort...")
-            # masterPlaylist = mergeSort(masterPlaylist, 0, len(masterPlaylist))
-            print("        Sorted!\n")
+            # Quicksort
+            if userInput == "1":
+                print()
+                print("        Sorting using Quicksort...")
+                masterPlaylist = QS(masterPlaylist, masterPlaylistName)
+                print("        Sorted!\n")
 
-        # Shuffle
-        elif userInput == "5":
-            print()
-            print("        Shuffling buffer playlist...")
-            masterPlaylist = shuffle(masterPlaylist)
-            print("        Shuffled!\n")
+            # Selection Sort
+            elif userInput == "2":
+                print()
+                print("        Sorting using Selection Sort...")
+                masterPlaylist = SelSort(masterPlaylist)
+                print("        Sorted!\n")
 
-        # Exit
-        elif userInput == "6":
-            print()
+            # Heap Sort
+            elif userInput == "3":
+                print()
+                print("        Sorting using Quicksort...")
+                # masterPlaylist = heapSort(masterPlaylist)
+                print("        Sorted!\n")
+                
+            # Merge Sort
+            elif userInput == "4":
+                print()
+                print("        Sorting using Merge Sort...")
+                # masterPlaylist = mergeSort(masterPlaylist, 0, len(masterPlaylist))
+                print("        Sorted!\n")
 
-        else:
-            print("Sorry! That input is not recognized. Please try again.")
-            print()
+            # Shuffle
+            elif userInput == "5":
+                print()
+                print("        Shuffling buffer playlist...")
+                masterPlaylist = shuffle(masterPlaylist)
+                print("        Shuffled!\n")
+
+            # Exit
+            elif userInput == "0":
+                print()
+                break
+
+            else:
+                print("Sorry! That input is not recognized. Please try again.")
+                print()
 
     # Create a playlist
     elif userInput == "4":
@@ -397,7 +406,7 @@ while True:
         
         if len(masterPlaylist) == 0:
             print("    WARNING! Your buffer playlist is currently empty. Do you wish to proceed anyways?")
-            YoN = input("    >>> 1 (Yes) | 2 (No) ")
+            YoN = input("    >>> 1 (Yes) | 2 (No): ")
             if YoN == "1":
                 print("    Continuing...")
             elif YoN == "2":
@@ -423,13 +432,15 @@ while True:
         print("    === PLAYLIST [" + playlistName + "] CREATED ===")
         print()
 
-    # Create a playlist
+    # Clear the buffer playlist
     elif userInput == "5":
         print()
         print("    Clearing buffer playlist...")
         masterPlaylist[:] = []
         masterPlaylistName[:] = []
+        isSorted = False
         print("    Cleared!")
+        print()
 
     # Exit
     elif userInput == "0":
