@@ -12,20 +12,30 @@ from json.decoder import JSONDecodeError
 # == FUNCTIONS ================
 
 # Quicksort
-def QS(array):
+def QS(array, name):
     less = []
     equal = []
     greater = []
-    if len(array) > 1:
-        pivot = array[0]
-        for x in array:
+
+    l = []
+    e = []
+    g = []
+
+    if len(array) > 1 and len(name) > 1:
+        pivot = name[0]
+        i=0
+        for x in name:
             if x < pivot:
-                less.append(x)
+                less.append(array[i])
+                l.append(x)
             if x == pivot:
-                equal.append(x)
+                equal.append(array[i])
+                e.append(x)
             if x > pivot:
-                greater.append(x)
-        return QS(less) + equal + QS(greater)
+                greater.append(array[i])
+                g.append(x)
+            i+=1
+        return QS(less, l) + equal + QS(greater, g)
     else:
         return array
 
@@ -185,6 +195,7 @@ print("Welcome, " + str(displayName) + "!")
 print()
 
 masterPlaylist = []
+masterPlaylistName = []
 
 while True:
     print("- - - - - - - - - - - - - - - - - - - - - -")
@@ -194,7 +205,8 @@ while True:
     print("2. Show all of your public playlists")
     print("3. Sort/Shuffle your buffer playlist")
     print("4. Create a playlist with the selected songs")
-    print("5. Exit")
+    print("5. Clear the buffer playlist")
+    print("0. Exit")
     print()
     userInput = input(">>> Enter a number: ")
 
@@ -246,7 +258,7 @@ while True:
             print()
             print("    What would you like to do with " + search + "?")
             print("    1. Select a song")
-            print("    2. Exit")
+            print("    0. Exit")
             print()
             userInput = input("    >>> Enter a number: ")
             i=0
@@ -262,26 +274,34 @@ while True:
                     print()
                     print("        What would you like to do with " + inspect['name'] + "?")
                     print("        1. Preview song")
-                    print("        2. Add song to playlist")
-                    print("        3. Exit")
+                    print("        2. View artwork")
+                    print("        3. Add song to playlist")
+                    print("        0. Exit")
                     print()
                     userInput = input("        >>> Enter a number: ")
 
                     if userInput == '1':
                         print()
-                        print("        Now Previewing: " + inspect['album']['name'])
+                        print("             Now Previewing: " + inspect['name'])
                         webbrowser.open(inspect['preview_url'])
 
                     elif userInput == "2":
                         print()
-                        print("        Adding song to the buffer playlist...")
-                        masterPlaylist.append(inspect['id'])
+                        print("            Now viewing artwork for " + inspect['name'])
+                        webbrowser.open(inspect['album']['images'][0]['url'])
 
                     elif userInput == "3":
                         print()
+                        print("            Adding " + inspect['name'] + " to the buffer playlist...")
+                        masterPlaylist.append(inspect['id'])
+                        masterPlaylistName.append(inspect['name'])
+
+                    elif userInput == "0":
+                        print()
                         break
 
-            elif userInput == "2":
+            # Exit
+            elif userInput == "0":
                 print()
                 break
         
@@ -323,7 +343,7 @@ while True:
         print("    3. Sort alphabetically through Heap Sort")
         print("    4. Sort alphabetically through Merge Sort")
         print("    5. Shuffle the song order")
-        print("    6. Exit")
+        print("    0. Exit")
         print()
         userInput = input("    >>> Enter a number: ")
         i=0
@@ -332,7 +352,7 @@ while True:
         if userInput == "1":
             print()
             print("        Sorting using Quicksort...")
-            masterPlaylist = QS(masterPlaylist)
+            masterPlaylist = QS(masterPlaylist, masterPlaylistName)
             print("        Sorted!\n")
 
         # Selection Sort
@@ -374,11 +394,21 @@ while True:
     # Create a playlist
     elif userInput == "4":
         print()
-        print("Creating playlist...")
+        
+        if len(masterPlaylist) == 0:
+            print("    WARNING! Your buffer playlist is currently empty. Do you wish to proceed anyways?")
+            YoN = input("    >>> 1 (Yes) | 2 (No) ")
+            if YoN == "1":
+                print("    Continuing...")
+            elif YoN == "2":
+                print()
+                continue
+
+        print("    Creating playlist...")
 
         # Ask for user input for playlist name and description
-        playlistName = input(">>> What do you want to name the playlist? ")
-        playlistDescription = input(">>> Write a description for the playlist: ")
+        playlistName = input("    >>> What do you want to name the playlist? ")
+        playlistDescription = input("    >>> Write a description for the playlist: ")
 
         # Create playlist and enter the songs
         spotifyObject.trace = False
@@ -390,11 +420,19 @@ while True:
             results = spotifyObject.user_playlist_add_tracks(userID, playlistURI, masterPlaylist)
 
         print()
-        print("=== PLAYLIST [" + playlistName + "] CREATED ===")
+        print("    === PLAYLIST [" + playlistName + "] CREATED ===")
         print()
 
-    # Exit
+    # Create a playlist
     elif userInput == "5":
+        print()
+        print("    Clearing buffer playlist...")
+        masterPlaylist[:] = []
+        masterPlaylistName[:] = []
+        print("    Cleared!")
+
+    # Exit
+    elif userInput == "0":
         print()
         print("Thank you! Have a nice day! c:")
         print()
