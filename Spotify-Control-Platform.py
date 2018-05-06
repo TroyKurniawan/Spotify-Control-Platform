@@ -9,6 +9,7 @@ import pprint
 import subprocess
 from json.decoder import JSONDecodeError
 
+
 # == FUNCTIONS ================
 
 # Quicksort
@@ -92,33 +93,7 @@ def mergeSort(arr, l, r):
         mergeSort(arr, l, m)
         mergeSort(arr, m + 1, r)
         merge(arr, l, m, r)
-
-# Heapify
-def heapify(arr, n, root):
-    largest = root
-    l = 2 * root + 1
-    r = 2 * root + 2
-
-    if l < n and arr[root] < arr[l]:
-        largest = l
-
-    if r < n and arr[root] < arr[r]:
-        largest = r
-
-    if largest != root:
-        arr[root], arr[largest] = arr[largest], arr[root]
-        heapify(arr, n, largest)
-
-# Heapsort
-def heapSort(arr):
-    n = len(arr)
-
-    for i in range(n, -1, -1):
-        heapify(arr, n, i)
-
-    for i in range(n - 1, 0, -1):
-        arr[i], arr[0] = arr[0], arr[i]
-        heapify(arr, i, 0)
+    return arr
 
 # Shuffle
 def shuffle(array):
@@ -158,7 +133,15 @@ scope = 'user-read-private user-read-playback-state user-modify-playback-state p
 
 #   Erase cache and prompt for user permission:
 # try:
-token = util.prompt_for_user_token(userID, scope)
+# token = util.prompt_for_user_token(userID, scope)
+token = util.prompt_for_user_token( userID,
+                                    scope,
+                                    client_id='05856e0782d0460ea1319ef2cbc98167',
+                                    client_secret='ffb65ee2ca7c44d4a7e7f4411f3d0b7b',
+                                    redirect_uri='http://google.com/'
+                                    )
+
+
 # except:
     # os.remove(f".cache-{userID}")
     # token = util.prompt_for_user_token(userID, scope)
@@ -202,7 +185,7 @@ while True:
     print("- - - - - - - - - - - - - - - - - - - - - -")
     print()
     print("What would you like to do?")
-    print("1. Serach for an artist and song to store in a playlist")
+    print("1. Search for an artist and song to store in a playlist")
     print("2. Show all of your public playlists")
     print("3. Sort/Shuffle your buffer playlist")
     print("4. Create a playlist with the selected songs")
@@ -211,7 +194,7 @@ while True:
     print()
     userInput = input(">>> Enter a number: ")
 
-    # Serach for an artist and song
+    # Search for an artist and song
     if userInput == "1":
         print()
         search = input("    >>> Enter the artist's alias: ")
@@ -373,15 +356,15 @@ while True:
             # Heap Sort
             elif userInput == "3":
                 print()
-                print("        Sorting using Quicksort...")
-                # masterPlaylist = heapSort(masterPlaylist)
+                print("        Sorting using Heap sort...")
+                masterPlaylist = heapSort(masterPlaylist)
                 print("        Sorted!\n")
                 
             # Merge Sort
             elif userInput == "4":
                 print()
                 print("        Sorting using Merge Sort...")
-                # masterPlaylist = mergeSort(masterPlaylist, 0, len(masterPlaylist))
+                masterPlaylist = mergeSort(masterPlaylist, 0, len(masterPlaylist))
                 print("        Sorted!\n")
 
             # Shuffle
@@ -421,7 +404,7 @@ while True:
 
         # Create playlist and enter the songs
         spotifyObject.trace = False
-        playlists = spotifyObject.user_playlist_create(userID, playlistName, description=playlistDescription)
+        playlists = spotifyObject.user_playlist_create(userID, playlistName)#, description=playlistDescription)
 
         # Fill playlist with the songs chosen
         playlistURI = playlists['uri']
