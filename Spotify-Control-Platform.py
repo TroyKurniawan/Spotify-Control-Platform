@@ -41,13 +41,15 @@ def QS(array, name):
         return array
 
 # SelectionSort
-def SelSort(A):
-    for i in range(len(A)):
+def SelSort(A, B):
+    for i in range(len(B)):
         min_index = i
-        for j in range(i + 1, len(A)):
-            if A[min_index] > A[j]:
+        for j in range(i + 1, len(B)):
+            if B[min_index] >= B[j]:
                 min_index = j
         A[i], A[min_index] = A[min_index], A[i]
+        B[i], B[min_index] = B[min_index], B[i]
+        print(B[min_index])
     return A
 
 # MergeSort
@@ -353,7 +355,10 @@ while True:
             elif userInput == "2":
                 print()
                 print("        Sorting using Selection Sort...")
-                masterPlaylist = SelSort(masterPlaylist)
+                masterPlaylist = SelSort(masterPlaylist, masterPlaylistName)
+                print(masterPlaylistName)
+                masterPlaylistName = SelSort(masterPlaylistName, masterPlaylistName)
+                print(masterPlaylistName)
                 print("        Sorted!\n")
                 
             # Merge Sort
