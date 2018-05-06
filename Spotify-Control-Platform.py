@@ -180,6 +180,7 @@ print()
 isSorted = False
 masterPlaylist = []
 masterPlaylistName = []
+masterDuration = []
 
 while True:
     print("- - - - - - - - - - - - - - - - - - - - - -")
@@ -279,6 +280,7 @@ while True:
                         print("            Adding " + inspect['name'] + " to the buffer playlist...")
                         masterPlaylist.append(inspect['id'])
                         masterPlaylistName.append(inspect['name'])
+                        masterDuration.append(inspect['duration_ms'])
 
                     elif userInput == "0":
                         print()
@@ -321,10 +323,10 @@ while True:
     # Sort your buffer playlist
     elif userInput == "3":
 
-        if isSorted:
-            print()
-            print("    Note: You have already sorted the buffer playlist. You may not sort it again until you've cleared the buffer playlist.")
-            continue
+        # if isSorted:
+        #     print()
+        #     print("    Note: You have already sorted the buffer playlist. You may not sort it again until you've cleared the buffer playlist.")
+        #     continue
 
         while True:
             print()
@@ -333,7 +335,8 @@ while True:
             print("    *2. Sort alphabetically through Selection Sort")
             print("    *3. Sort alphabetically through Heap Sort")
             print("    *4. Sort alphabetically through Merge Sort")
-            print("    5. Shuffle the song order")
+            print("    5. Sort by songs duration (Quicksort)")
+            print("    6. Shuffle the song order")
             print("    0. Exit")
             print()
             userInput = input("    >>> Enter a number: ")
@@ -344,6 +347,7 @@ while True:
                 print()
                 print("        Sorting using Quicksort...")
                 masterPlaylist = QS(masterPlaylist, masterPlaylistName)
+                masterPlaylistName = QS(masterPlaylistName, masterPlaylistName)
                 print("        Sorted!\n")
 
             # Selection Sort
@@ -367,8 +371,17 @@ while True:
                 masterPlaylist = mergeSort(masterPlaylist, 0, len(masterPlaylist))
                 print("        Sorted!\n")
 
-            # Shuffle
+            # Sort by songs duration (Quicksort)
             elif userInput == "5":
+                print()
+                print("        Sorting by song duration...")
+                masterPlaylist = QS(masterPlaylist, masterDuration)
+                masterPlaylistName = QS(masterPlaylistName, masterDuration)
+                masterDuration = QS(masterDuration, masterDuration)
+                print("        Sorted!\n")
+
+            # Shuffle
+            elif userInput == "6":
                 print()
                 print("        Shuffling buffer playlist...")
                 masterPlaylist = shuffle(masterPlaylist)
