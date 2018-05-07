@@ -442,6 +442,7 @@ while True:
         print("    Clearing buffer playlist...")
         masterPlaylist[:] = []
         masterPlaylistName[:] = []
+        masterDuration[:] = []
         isSorted = False
         print("    Cleared!")
         print()
