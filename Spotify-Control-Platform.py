@@ -451,14 +451,15 @@ while True:
     elif userInput == "6":
         if len(masterPlaylistName) == 0:
             print()
-            print("The playlist is already empty.")
+            print("    The playlist is already empty.")
         else:
             count = 1
             print()
-            print("Now showing buffer playlist...")
+            print("    Now showing buffer playlist...")
             for item in masterPlaylistName:
-                print(str(count) + ". " + item)
+                print("    " + str(count) + ". " + item)
                 count += 1
+        print()
 
     # Exit
     elif userInput == "0":
