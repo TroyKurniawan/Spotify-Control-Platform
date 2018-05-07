@@ -16,7 +16,7 @@ class masterstorage():
         return self.values
     def names(self):
         return self.listofnames
-    def __init__(self, A, B:
+    def __init__(self, A, B):
         self.values = A
         self.listofnames = B
 
@@ -87,7 +87,7 @@ def mergeSort(A):
     n = len(A)
     if n <= 1:
         return A
-    left = mergeSort(A[:round(n / 2)])
+    left = mergeSort(A[0:round(n / 2)])
     right = mergeSort(A[round(n / 2):n])
     return mergefunc(left, right)
 
@@ -366,9 +366,17 @@ while True:
                 master.names = masterPlaylistName
                 master.ref = masterPlaylist
                 master = mergeSort(master.names)
+                
+                masterPlaylist[:] = []
+                masterPlaylistName[:] = []
+                for items in master:
+                    masterPlaylist.append(items)
+                    masterPlaylistName.append(items)
+                    # print(masterPlaylist)
+                    # print(masterPlaylistName)
 
-                masterPlaylist = master.ref
-                masterPlaylistName = master.names
+                # masterPlaylist = master.ref
+                # masterPlaylistName = master.names
                 print("        Sorted!\n")
 
             # Sort by songs duration (Quicksort)
