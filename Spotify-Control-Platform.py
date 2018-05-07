@@ -11,6 +11,14 @@ from json.decoder import JSONDecodeError
 
 
 # == FUNCTIONS ================
+class masterstorage():
+    def ref(self):
+        return self.values
+    def names(self):
+        return self.listofnames
+    def __init__(self, A, B:
+        self.values = A
+        self.listofnames = B
 
 # Quicksort
 def QS(array, name):
@@ -53,49 +61,35 @@ def SelSort(A, B):
     return A
 
 # MergeSort
-def merge(arr, l, m, r):
-    n1 = m - l + 1
-    n2 = r - m
-    L = [0] * (n1)
-    R = [0] * (n2)
 
-    for i in range(0 , n1):
-        L[i] = arr[l + i]
-
-    for j in range (0, n2):
-        R[i] = arr[m + 1 + j]
-
+def mergefunc(left, right):
     i = 0
     j = 0
-    k = l
+    hold = []
 
-    while i < n1 and j < n2:
-        if L[i] <= R[j]:
-            arr[k] = L[i]
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            hold.append(left[i])
             i += 1
         else:
-            arr[k] = R[j]
+            hold.append(right[j])
             j += 1
-        k += 1
-
-    while i < n1:
-        arr[k] = L[i]
+    while i < len(left):
+        hold.append(left[i])
         i += 1
-        k += 1
-
-    while j < n2:
-        arr[k] = R[j]
+    while j < len(right):
+        hold.append(right[j])
         j += 1
-        k += 1
+    return hold
 
-def mergeSort(arr, l, r):
-    if l < r:
-        m = (l + (r - 1)) / 2
 
-        mergeSort(arr, l, m)
-        mergeSort(arr, m + 1, r)
-        merge(arr, l, m, r)
-    return arr
+def mergeSort(A):
+    n = len(A)
+    if n <= 1:
+        return A
+    left = mergeSort(A[:round(n / 2)])
+    right = mergeSort(A[round(n / 2):n])
+    return mergefunc(left, right)
 
 # Shuffle
 def shuffle(array):
@@ -356,16 +350,24 @@ while True:
                 print()
                 print("        Sorting using Selection Sort...")
                 masterPlaylist = SelSort(masterPlaylist, masterPlaylistName)
-                print(masterPlaylistName)
+               # print(masterPlaylistName)
                 masterPlaylistName = SelSort(masterPlaylistName, masterPlaylistName)
-                print(masterPlaylistName)
+                #print(masterPlaylistName)
                 print("        Sorted!\n")
                 
             # Merge Sort
             elif userInput == "3":
                 print()
                 print("        Sorting using Merge Sort...")
-                masterPlaylist = mergeSort(masterPlaylist, 0, len(masterPlaylist))
+                #masterPlaylist = mergeSortpair(masterPlaylist, masterPlaylistName)
+                #need to store pairing in a new array
+                master = masterstorage(masterPlaylist, masterPlaylistName)
+                master.names = masterPlaylistName
+                master.ref = masterPlaylist
+                master = mergeSort(master.names)
+
+                masterPlaylist = master.ref
+                masterPlaylistName = master.names
                 print("        Sorted!\n")
 
             # Sort by songs duration (Quicksort)
