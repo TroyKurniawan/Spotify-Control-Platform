@@ -450,7 +450,6 @@ while True:
             print()
             print("    Now showing buffer playlist...")
             for item in masterPlaylistName:
-                print(str(count) + ". " + item)
                 print("    " + str(count) + ". " + item)
                 count += 1
         print()
