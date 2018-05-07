@@ -11,14 +11,6 @@ from json.decoder import JSONDecodeError
 
 
 # == FUNCTIONS ================
-class masterstorage():
-    def ref(self):
-        return self.values
-    def names(self):
-        return self.listofnames
-    def __init__(self, A, B:
-        self.values = A
-        self.listofnames = B
 
 # Quicksort
 def QS(array, name):
@@ -92,11 +84,12 @@ def mergeSort(A):
     return mergefunc(left, right)
 
 # Shuffle
-def shuffle(array):
+def shuffle(array, array2):
     n = len(array)
     for i in range(n - 1, 0, -1):
         j = random.randint(0, i)
         array[i], array[j] = array[j], array[i]
+        array2[i], array2[j] = array2[j], array2[i]
     return array
 
 # Show tracks from the user
@@ -360,15 +353,19 @@ while True:
             elif userInput == "3":
                 print()
                 print("        Sorting using Merge Sort...")
-                #masterPlaylist = mergeSortpair(masterPlaylist, masterPlaylistName)
-                #need to store pairing in a new array
-                master = masterstorage(masterPlaylist, masterPlaylistName)
-                master.names = masterPlaylistName
-                master.ref = masterPlaylist
-                master = mergeSort(master.names)
-
-                masterPlaylist = master.ref
-                masterPlaylistName = master.names
+                copylistname = masterPlaylistName
+                masterPlaylistName = mergeSort(masterPlaylistName)
+                newlist = list()
+                for i in range(0, len(masterPlaylist)):
+                    for j in range(0, len(masterPlaylist)):
+                            #print(i, j, masterPlaylistName[i], copylistname[j])
+                            if masterPlaylistName[i] == copylistname[j]:
+                                #print(masterPlaylist[i], masterPlaylist[j])
+                                #works sometimesmasterPlaylist[i], masterPlaylist[j], copylistname[i] = masterPlaylist[j], masterPlaylist[i], copylistname[j]
+                                #print(masterPlaylist[i], masterPlaylist[j])
+                                newlist.append(masterPlaylist[j])
+                                break
+                masterPlaylist = newlist
                 print("        Sorted!\n")
 
             # Sort by songs duration (Quicksort)
@@ -384,7 +381,7 @@ while True:
             elif userInput == "5":
                 print()
                 print("        Shuffling buffer playlist...")
-                masterPlaylist = shuffle(masterPlaylist)
+                masterPlaylist = shuffle(masterPlaylist, masterPlaylistName)
                 print("        Shuffled!\n")
 
             # Exit
