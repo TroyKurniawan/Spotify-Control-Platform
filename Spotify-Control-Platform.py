@@ -24,7 +24,7 @@ def QS(array, name):
 
     if len(array) > 1 and len(name) > 1:
         pivot = name[0]
-        i=0
+        i = 0
         for x in name:
             if x < pivot:
                 less.append(array[i])
@@ -35,10 +35,11 @@ def QS(array, name):
             if x > pivot:
                 greater.append(array[i])
                 g.append(x)
-            i+=1
+            i += 1
         return QS(less, l) + equal + QS(greater, g)
     else:
         return array
+
 
 # SelectionSort
 def SelSort(A, B):
@@ -51,6 +52,7 @@ def SelSort(A, B):
         B[i], B[min_index] = B[min_index], B[i]
         print(B[min_index])
     return A
+
 
 # MergeSort
 
@@ -83,6 +85,7 @@ def mergeSort(A):
     right = mergeSort(A[round(n / 2):n])
     return mergefunc(left, right)
 
+
 # Shuffle
 def shuffle(array, array2):
     n = len(array)
@@ -92,11 +95,13 @@ def shuffle(array, array2):
         array2[i], array2[j] = array2[j], array2[i]
     return array
 
+
 # Show tracks from the user
 def show_tracks(tracks):
     for i, item in enumerate(tracks['items']):
         track = item['track']
         print("    %s - %s" % (track['artists'][0]['name'], track['name']))
+
 
 # =============================
 
@@ -123,17 +128,16 @@ scope = 'user-read-private user-read-playback-state user-modify-playback-state p
 #   Erase cache and prompt for user permission:
 # try:
 # token = util.prompt_for_user_token(userID, scope)
-token = util.prompt_for_user_token( userID,
-                                    scope,
-                                    client_id='05856e0782d0460ea1319ef2cbc98167',
-                                    client_secret='ffb65ee2ca7c44d4a7e7f4411f3d0b7b',
-                                    redirect_uri='http://google.com/'
-                                    )
-
+token = util.prompt_for_user_token(userID,
+                                   scope,
+                                   client_id='05856e0782d0460ea1319ef2cbc98167',
+                                   client_secret='ffb65ee2ca7c44d4a7e7f4411f3d0b7b',
+                                   redirect_uri='http://google.com/'
+                                   )
 
 # except:
-    # os.remove(f".cache-{userID}")
-    # token = util.prompt_for_user_token(userID, scope)
+# os.remove(f".cache-{userID}")
+# token = util.prompt_for_user_token(userID, scope)
 
 # ===============================================================================================
 
@@ -192,7 +196,7 @@ while True:
         print()
 
         # Grabbing artist data from index 0 (the first result)
-        result = spotifyObject.search(search,1,0,"artist")
+        result = spotifyObject.search(search, 1, 0, "artist")
         artist = result['artists']['items'][0]
         artistID = artist['id']
         album = spotifyObject.artist_albums(artistID)
@@ -225,7 +229,7 @@ while True:
                 trackName.append(item['name'])
                 trackURI.append(item['uri'])
                 trackArt.append(albumArt)
-                i+=1
+                i += 1
             print()
 
         while True:
@@ -236,14 +240,14 @@ while True:
             print("    0. Exit")
             print()
             userInput = input("    >>> Enter a number: ")
-            i=0
+            i = 0
 
             # Select a song
             if userInput == "1":
                 print()
                 trackNumber = input("        >>> Which song would you like to select? Choose a song by number: ")
                 inspect = spotifyObject.track(trackURI[int(trackNumber)])
-                
+
                 while True:
                     # Artist menu
                     print()
@@ -280,8 +284,8 @@ while True:
             elif userInput == "0":
                 print()
                 break
-        
-    # Show all of your public playlists        
+
+    # Show all of your public playlists
     elif userInput == "2":
         print()
         print("    Now printing out all of " + str(displayName) + "'s playlists")
@@ -303,11 +307,11 @@ while True:
                     while tracks['next']:
                         tracks = spotifyObject.next(tracks)
                         show_tracks(tracks)
-        
+
         # If the token cannot be found
         else:
             print("Error! Token not found!")
-        
+
         print()
 
     # Sort your buffer playlist
@@ -329,7 +333,7 @@ while True:
             print("    0. Exit")
             print()
             userInput = input("    >>> Enter a number: ")
-            i=0
+            i = 0
 
             # Quicksort
             if userInput == "1":
@@ -344,11 +348,11 @@ while True:
                 print()
                 print("        Sorting using Selection Sort...")
                 masterPlaylist = SelSort(masterPlaylist, masterPlaylistName)
-               # print(masterPlaylistName)
+                # print(masterPlaylistName)
                 masterPlaylistName = SelSort(masterPlaylistName, masterPlaylistName)
-                #print(masterPlaylistName)
+                # print(masterPlaylistName)
                 print("        Sorted!\n")
-                
+
             # Merge Sort
             elif userInput == "3":
                 print()
@@ -358,13 +362,13 @@ while True:
                 newlist = list()
                 for i in range(0, len(masterPlaylist)):
                     for j in range(0, len(masterPlaylist)):
-                            #print(i, j, masterPlaylistName[i], copylistname[j])
-                            if masterPlaylistName[i] == copylistname[j]:
-                                #print(masterPlaylist[i], masterPlaylist[j])
-                                #works sometimesmasterPlaylist[i], masterPlaylist[j], copylistname[i] = masterPlaylist[j], masterPlaylist[i], copylistname[j]
-                                #print(masterPlaylist[i], masterPlaylist[j])
-                                newlist.append(masterPlaylist[j])
-                                break
+                        # print(i, j, masterPlaylistName[i], copylistname[j])
+                        if masterPlaylistName[i] == copylistname[j]:
+                            # print(masterPlaylist[i], masterPlaylist[j])
+                            # works sometimesmasterPlaylist[i], masterPlaylist[j], copylistname[i] = masterPlaylist[j], masterPlaylist[i], copylistname[j]
+                            # print(masterPlaylist[i], masterPlaylist[j])
+                            newlist.append(masterPlaylist[j])
+                            break
                 masterPlaylist = newlist
                 print("        Sorted!\n")
 
@@ -396,7 +400,7 @@ while True:
     # Create a playlist
     elif userInput == "4":
         print()
-        
+
         if len(masterPlaylist) == 0:
             print("    WARNING! Your buffer playlist is currently empty. Do you wish to proceed anyways?")
             YoN = input("    >>> 1 (Yes) | 2 (No): ")
@@ -414,7 +418,7 @@ while True:
 
         # Create playlist and enter the songs
         spotifyObject.trace = False
-        playlists = spotifyObject.user_playlist_create(userID, playlistName)#, description=playlistDescription)
+        playlists = spotifyObject.user_playlist_create(userID, playlistName)  # , description=playlistDescription)
 
         # Fill playlist with the songs chosen
         playlistURI = playlists['uri']
@@ -454,7 +458,7 @@ while True:
         print("Thank you! Have a nice day! c:")
         print()
         sys.exit(1)
-    
+
     else:
         print("Sorry! That input is not recognized. Please try again.")
         print()
