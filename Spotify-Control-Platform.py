@@ -187,6 +187,7 @@ while True:
     print("3. Sort/Shuffle your buffer playlist")
     print("4. Create a playlist with the selected songs")
     print("5. Clear the buffer playlist")
+    print("6. Show your buffer playlist")
     print("0. Exit")
     print()
     userInput = input(">>> Enter a number: ")
@@ -436,6 +437,19 @@ while True:
         isSorted = False
         print("    Cleared!")
         print()
+
+    # Show the buffer playlist
+    elif userInput == "6":
+        if len(masterPlaylistName) == 0:
+            print()
+            print("The playlist is already empty.")
+        else:
+            count = 1
+            print()
+            print("Now showing buffer playlist...")
+            for item in masterPlaylistName:
+                print(str(count) + ". " + item)
+                count += 1
 
     # Exit
     elif userInput == "0":
